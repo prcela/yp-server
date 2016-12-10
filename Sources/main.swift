@@ -20,6 +20,25 @@
 import PerfectLib
 import PerfectHTTP
 import PerfectHTTPServer
+import PerfectWebSockets
+import MongoKitten
+
+
+let mongo: Server
+do {
+    mongo = try Server(mongoURL: "mongodb://localhost:27017", automatically: true)
+} catch {
+    // Unable to connect
+    fatalError("MongoDB is not available on the given host and port")
+}
+
+let database = mongo["yamb"]
+let statItemsCollection = database["statItems"]
+let playersCollection = database["players"]
+
+StatItem.loadStats()
+Player.loadPlayers()
+
 
 // Create HTTP server.
 let server = HTTPServer()
@@ -62,6 +81,20 @@ routes.add(method: .get, uri: "/info", handler: {
     response.completed()
 }
 )
+
+// Add the endpoint for the WebSocket example system
+routes.add(method: .get, uri: "/chat/", handler: {
+    request, response in
+    
+    // To add a WebSocket service, set the handler to WebSocketHandler.
+    // Provide your closure which will return your service handler.
+    WebSocketHandler(handlerProducer: {
+        (request: HTTPRequest, protocols: [String]) -> WebSocketSessionHandler? in
+                
+        // Return our service handler.
+        return ChatHandler()
+    }).handleRequest(request: request, response: response)
+})
 
 // Add the routes to the server.
 server.addRoutes(routes)

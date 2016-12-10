@@ -23,6 +23,8 @@ let package = Package(
 	name: "yp-server",
 	targets: [],
 	dependencies: [
-		.Package(url: "https://github.com/PerfectlySoft/Perfect-HTTPServer.git", majorVersion: 2, minor: 0)
+		.Package(url: "https://github.com/PerfectlySoft/Perfect-HTTPServer.git", majorVersion: 2, minor: 0),
+		.Package(url:"https://github.com/PerfectlySoft/Perfect-WebSockets.git", majorVersion: 2, minor: 0),
+		.Package(url: "https://github.com/OpenKitten/MongoKitten.git", majorVersion: 2, minor: 0)
     ]
 )
