@@ -63,6 +63,6 @@ fastlane/report.xml
 fastlane/screenshots
 
 Packages/
-PerfectTemplate.xcodeproj
+yp-server.xcodeproj
 Tests/
 webroot/
