@@ -21,6 +21,7 @@ import PerfectLib
 import PerfectHTTP
 import PerfectHTTPServer
 import PerfectWebSockets
+import PerfectThread
 import MongoKitten
 
 
@@ -201,7 +202,7 @@ routes.add(method: .get, uri: "/chat/", handler: {
 server.addRoutes(routes)
 
 // Set a listen port of 8181
-server.serverPort = 80
+server.serverPort = 8181
 
 // Set a document root.
 // This is optional. If you do not want to serve static content then do not set this.
@@ -212,6 +213,16 @@ server.documentRoot = "./webroot"
 // Run the server with --help to see the list of supported arguments.
 // Command line arguments will supplant any of the values set above.
 configureServer(server)
+
+let queue = Threading.getQueue(name: "clean", type: .serial)
+queue.dispatch {
+    while true {
+        Threading.sleep(seconds: 3)
+        print("background clean")
+        Room.main.clean()
+    }
+}
+
 
 do {
 	// Launch the HTTP server.
