@@ -17,6 +17,7 @@
 //===----------------------------------------------------------------------===//
 //
 
+import Foundation
 import PerfectLib
 import PerfectHTTP
 import PerfectHTTPServer
@@ -202,7 +203,12 @@ routes.add(method: .get, uri: "/chat/", handler: {
 server.addRoutes(routes)
 
 // Set a listen port of 8181
-server.serverPort = 80
+#if os(macOS)
+    server.serverPort = 8181
+#else
+    server.serverPort = 80
+#endif
+
 
 // Set a document root.
 // This is optional. If you do not want to serve static content then do not set this.
@@ -218,7 +224,7 @@ let queue = Threading.getQueue(name: "clean", type: .serial)
 queue.dispatch {
     while true {
         Threading.sleep(seconds: 3)
-        print("background clean")
+        print("\(Date()) background clean")
         Room.main.clean()
     }
 }

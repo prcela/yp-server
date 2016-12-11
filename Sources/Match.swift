@@ -77,6 +77,7 @@ class Match
         {
             // dump the player
             print("Player dumped")
+            p.sentMessages.removeAll()
             let dic = ["msg_func":"dump", "id":p.id, "match_id":id] as [String : Any]
             send(dic, ttl: 3600) // one hour
             anyDumped = true
