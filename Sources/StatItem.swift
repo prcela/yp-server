@@ -25,10 +25,10 @@ class StatItem
     {
         player_id = dic["player_id"] as! String
         match_type = dic["match_type"] as! String
-        dice_num = dic["dice_num"] as! Int32
-        score = dic["score"] as! Int32
-        result = dic["result"] as! Int32
-        bet = dic["bet"] as! Int32
+        dice_num = Int32(dic["dice_num"] as! Int)
+        score = Int32(dic["score"] as! Int)
+        result = Int32(dic["result"] as! Int)
+        bet = Int32(dic["bet"] as! Int)
         timestamp = Date()
     }
     
