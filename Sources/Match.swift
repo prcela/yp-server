@@ -105,11 +105,12 @@ class Match
                         print("player last message older than 20s")
                         dump(p)
                     }
-                    else if lastShortMsg.timestamp.addingTimeInterval(10) < now
-                    {
-                        print("player last message older than 10s")
-                        willBeDumped(p)
-                    }
+                    // Privremeno zakomentirao dok ne skuzim zasto se ovo stalno zove
+//                    else if lastShortMsg.timestamp.addingTimeInterval(10) < now
+//                    {
+//                        print("player last message older than 10s")
+//                        willBeDumped(p)
+//                    }
                 }
                 
                 if let disconnectedAt = p.disconnectedAt
