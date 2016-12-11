@@ -27,15 +27,17 @@ class ChatHandler: WebSocketSessionHandler {
     // The name of the super-protocol we implement.
     // This is optional, but it should match whatever the client-side WebSocket is initialized with.
     let socketProtocol: String? = "chat"
+    var player: Player? = nil
     
     // This function is called by the WebSocketHandler once the connection has been established.
     func handleSession(request: HTTPRequest, socket: WebSocket) {
         
-        var player: Player? = nil
+        print("handle session( req: \(request) socket: \(socket))")
+        socket.readTimeoutSeconds = -1
         
         func process(dic: [String:Any])
         {
-            if let msgId = dic["ack"] as? UInt
+            if let msgId = dic["ack"] as? Int
             {
                 if let msgIdx = player?.sentMessages.index(where: { (msg) -> Bool in
                     return msg.id == msgId
@@ -94,6 +96,9 @@ class ChatHandler: WebSocketSessionHandler {
             
         }
 
+        socket.readBytesMessage { (bytes, op, fin) in
+            print("Read bytes msg: \(bytes) op: \(op) fin: \(fin)")
+        }
         
         // Read a message from the client as a String.
         // Alternatively we could call `WebSocket.readBytesMessage` to get binary data from the client.
@@ -109,11 +114,9 @@ class ChatHandler: WebSocketSessionHandler {
             guard let string = string else {
                 // This block will be executed if, for example, the browser window is closed.
                 socket.close()
+                guard self.player != nil else {return}
+                Room.main.onClose(player: self.player!)
                 return
-            }
-            
-            func completion() {
-                
             }
             
             let dic = try! string.jsonDecode() as! [String : Any]
@@ -127,11 +130,11 @@ class ChatHandler: WebSocketSessionHandler {
             // For example, if one were streaming a large file such as a video, one would pass false for final.
             // This indicates to the receiver that there is more data to come in subsequent messages but that all the data is part of the same logical message.
             // In such a scenario one would pass true for final only on the last bit of the video.
-            socket.sendStringMessage(string: string, final: true) {
+            socket.sendStringMessage(string: "ok", final: true) {
                 
                 // This callback is called once the message has been sent.
                 // Recurse to read and echo new message.
-                print("ok")
+                print("sent ok")
                 self.handleSession(request: request, socket: socket)
             }
         }

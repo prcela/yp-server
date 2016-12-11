@@ -23,7 +23,7 @@ class Player
     var connected = false
     var disconnectedAt: Date?
     
-    var msgCounter: UInt = 0
+    var msgCounter: Int = 0
     var sentMessages = [SentMsg]()
     
     init(dic: [String:Any])
@@ -47,7 +47,7 @@ class Player
     func update(dic: [String:Any])
     {
         alias = dic["alias"] as! String
-        diamonds = dic["diamonds"] as! Int64
+        diamonds = Int64(dic["diamonds"] as! Int)
         avgScore6 = dic["avg_score_6"] as? Double
         avgScore5 = dic["avg_score_5"] as? Double
     }
@@ -105,7 +105,7 @@ class Player
         
         if let socket = Room.main.connections[id]
         {
-            socket.sendStringMessage(string: try! dic.jsonEncodedString(), final: false, completion: {})
+            socket.sendStringMessage(string: try! dic.jsonEncodedString(), final: true, completion: {})
         }
         
         print("sentmessages.append")
@@ -157,7 +157,7 @@ class Player
 
 struct SentMsg
 {
-    let id: UInt
+    let id: Int
     let timestamp: Date
     let ttl: TimeInterval
     let dic: [String:Any]

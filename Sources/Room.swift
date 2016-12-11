@@ -59,7 +59,7 @@ class Room
     func joinMatch(dic: [String:Any], player: Player)
     {
         guard
-            let matchId = dic["match_id"] as? UInt,
+            let matchId = dic["match_id"] as? Int,
             let match = findMatch(id: matchId) else
         {
             return
@@ -91,7 +91,7 @@ class Room
     }
     
     func leaveMatch(dic: [String:Any], player: Player) {
-        let matchId = dic["match_id"] as? UInt
+        let matchId = dic["match_id"] as? Int
         
         if let idx = matches.index(where: {$0.id == matchId})
         {
@@ -117,7 +117,7 @@ class Room
     func turn(dic: [String:Any])
     {
         if let id = dic["id"] as? String,
-            let matchId = dic["match_id"] as? UInt,
+            let matchId = dic["match_id"] as? Int,
             let match = findMatch(id: matchId)
         {
             // forward message to other participants in match
@@ -136,7 +136,7 @@ class Room
         sendInfo()
     }
     
-    func findMatch(id: UInt) -> Match?
+    func findMatch(id: Int) -> Match?
     {
         for m in matches
         {

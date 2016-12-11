@@ -15,11 +15,11 @@ enum MatchState: String
     case Finished = "Finished"
 }
 
-private var matchIdCounter: UInt = 0
+private var matchIdCounter: Int = 0
 
 class Match
 {
-    var id: UInt
+    var id: Int
     var state:MatchState = .WaitingForPlayers
     var players = [Player]()
     var diceMaterials: [String] = ["a","b"]
