@@ -220,14 +220,14 @@ server.documentRoot = "./webroot"
 // Command line arguments will supplant any of the values set above.
 configureServer(server)
 
-let queue = Threading.getQueue(name: "clean", type: .serial)
-queue.dispatch {
-    while true {
-        Threading.sleep(seconds: 3)
-        print("\(Date()) background clean")
-        Room.main.clean()
-    }
-}
+//let queue = Threading.getQueue(name: "clean", type: .serial)
+//queue.dispatch {
+//    while true {
+//        Threading.sleep(seconds: 3)
+//        print("\(Date()) background clean")
+//        Room.main.clean()
+//    }
+//}
 
 
 do {
