@@ -201,7 +201,7 @@ routes.add(method: .get, uri: "/chat/", handler: {
 server.addRoutes(routes)
 
 // Set a listen port of 8181
-server.serverPort = 8181
+server.serverPort = 80
 
 // Set a document root.
 // This is optional. If you do not want to serve static content then do not set this.
