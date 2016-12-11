@@ -62,7 +62,7 @@ routes.add(method: .get, uri: "/info", handler: {
     
     let info = [
         "min_required_version": minRequiredVersion,
-        "room_main_ct": 1,
+        "room_main_ct": Room.main.connections.count,
         "room_main_free_ct": 0
     ]
     
