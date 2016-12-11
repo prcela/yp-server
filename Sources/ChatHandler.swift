@@ -10,6 +10,8 @@ import Foundation
 import PerfectWebSockets
 import PerfectHTTP
 
+fileprivate var lastClean: Date?
+
 // A WebSocket service handler must impliment the `WebSocketSessionHandler` protocol.
 // This protocol requires the function `handleSession(request: WebRequest, socket: WebSocket)`.
 // This function will be called once the WebSocket connection has been established,
@@ -119,11 +121,19 @@ class ChatHandler: WebSocketSessionHandler {
                 return
             }
             
+            // Print some information to the console for informational purposes.
+            print("Read msg: \(string) op: \(op) fin: \(fin)")
+            
             let dic = try! string.jsonDecode() as! [String : Any]
             process(dic: dic)
             
-            // Print some information to the console for informational purposes.
-            print("Read msg: \(string) op: \(op) fin: \(fin)")
+            // svakih n sec počisti ili dumpaj igrače
+            if lastClean == nil || lastClean!.addingTimeInterval(3) < Date()
+            {
+                lastClean = Date()
+                Room.main.clean()
+            }
+            
             
             // Echo the data we received back to the client.
             // Pass true for final. This will usually be the case, but WebSockets has the concept of fragmented messages.
