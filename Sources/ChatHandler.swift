@@ -97,10 +97,6 @@ class ChatHandler: WebSocketSessionHandler {
             }
             
         }
-
-        socket.readBytesMessage { (bytes, op, fin) in
-            print("Read bytes msg: \(bytes) op: \(op) fin: \(fin)")
-        }
         
         // Read a message from the client as a String.
         // Alternatively we could call `WebSocket.readBytesMessage` to get binary data from the client.
@@ -135,18 +131,9 @@ class ChatHandler: WebSocketSessionHandler {
             }
             
             
-            // Echo the data we received back to the client.
-            // Pass true for final. This will usually be the case, but WebSockets has the concept of fragmented messages.
-            // For example, if one were streaming a large file such as a video, one would pass false for final.
-            // This indicates to the receiver that there is more data to come in subsequent messages but that all the data is part of the same logical message.
-            // In such a scenario one would pass true for final only on the last bit of the video.
-            socket.sendStringMessage(string: "ok", final: true) {
-                
-                // This callback is called once the message has been sent.
-                // Recurse to read and echo new message.
-                print("sent ok")
-                self.handleSession(request: request, socket: socket)
-            }
+            // This callback is called once the message has been sent.
+            // Recurse to read new message.
+            self.handleSession(request: request, socket: socket)
         }
     }
 }
