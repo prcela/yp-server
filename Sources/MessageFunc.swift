@@ -17,6 +17,7 @@ enum MessageFunc: String
     case CreateMatch = "create_match"
     case JoinMatch = "join_match"
     case LeaveMatch = "leave_match"
+    case LeaveMatchReplay = "leave_match_replay"
     case Turn = "turn"
     case InvitePlayer = "invite_player"
     case IgnoreInvitation = "ignore_invitation"

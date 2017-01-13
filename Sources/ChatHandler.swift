@@ -69,6 +69,10 @@ class ChatHandler: WebSocketSessionHandler {
                     guard player != nil else {return}
                     Room.main.leaveMatch(dic: dic, player: player!)
                     
+                case .LeaveMatchReplay:
+                    guard player != nil else {return}
+                    Room.main.leaveMatch(dic: dic, player: player!)
+                    
                 case .InvitePlayer:
                     
                     let recipientId = dic["recipient"] as! String
@@ -111,6 +115,7 @@ class ChatHandler: WebSocketSessionHandler {
             // By default there is no timeout.
             guard let string = string else {
                 // This block will be executed if, for example, the browser window is closed.
+                print("onClose")
                 socket.close()
                 guard self.player != nil else {return}
                 Room.main.onClose(player: self.player!)

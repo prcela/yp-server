@@ -100,16 +100,19 @@ class Player
         msgCounter += 1
         // create a coy that is unique for player
         var dic = dic
-        print("created copy")
         dic["msg_id"] = msgCounter
+        
+        let text = try! dic.jsonEncodedString()
         
         if let socket = Room.main.connections[id]
         {
-            socket.sendStringMessage(string: try! dic.jsonEncodedString(), final: true, completion: {})
+            print("Send string: \(text)")
+            socket.sendStringMessage(string: text, final: true, completion: {})
         }
         
         print("sentmessages.append")
-        sentMessages.append(SentMsg(id: msgCounter, timestamp: Date(), ttl:ttl,  dic: dic))
+        let sentMsg = SentMsg(id: msgCounter, timestamp: Date(), ttl:ttl,  text: text)
+        sentMessages.append(sentMsg)
     }
     
     func deleteExpiredMessages()
@@ -132,7 +135,7 @@ class Player
             for sentMsg in sentMessages
             {
                 print(id)
-                socket.sendStringMessage(string: try! sentMsg.dic.jsonEncodedString(), final: true, completion: {})
+                socket.sendStringMessage(string: sentMsg.text, final: true, completion: {})
             }
             print("finished")
         }
@@ -160,5 +163,5 @@ struct SentMsg
     let id: Int
     let timestamp: Date
     let ttl: TimeInterval
-    let dic: [String:Any]
+    let text: String
 }

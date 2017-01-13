@@ -127,7 +127,10 @@ class Room
     
     func onClose(player: Player)
     {
-        connections.removeValue(forKey: player.id)
+        if connections[player.id] != nil
+        {
+            connections.removeValue(forKey: player.id)
+        }
         
         player.connected = false
         player.disconnectedAt = Date()
@@ -155,6 +158,7 @@ class Room
     {
         do {
             let str = try dic.jsonEncodedString()
+            print("Send msg in room: \(str)")
             for (_, socket) in connections
             {
                 socket.sendStringMessage(string: str, final: true, completion: {})

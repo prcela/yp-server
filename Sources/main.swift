@@ -59,7 +59,7 @@ routes.add(method: .get, uri: "/", handler: {
 routes.add(method: .get, uri: "/info", handler: {
     request, response in
     
-    let minRequiredVersion = 6
+    let minRequiredVersion = 8
     
     let info = [
         "min_required_version": minRequiredVersion,
@@ -164,14 +164,14 @@ routes.add(method: .post, uri: "/updatePlayer", handler: {
         if let player = Player.all[id]
         {
             player.update(dic: dic)
-            try? playersCollection.update(matching: ["_id": .string(id)], to: player.document())
+            _ = try? playersCollection.update(matching: ["_id": .string(id)], to: player.document())
         }
         else
         {
             // instantiate new player
             let player = Player(dic: dic)
             Player.all[player.id] = player
-            try? playersCollection.insert(player.document())
+            _ = try? playersCollection.insert(player.document())
         }
     }
     
@@ -193,7 +193,7 @@ routes.add(method: .get, uri: "/chat/", handler: {
     // Provide your closure which will return your service handler.
     WebSocketHandler(handlerProducer: {
         (request: HTTPRequest, protocols: [String]) -> WebSocketSessionHandler? in
-                
+        
         // Return our service handler.
         return ChatHandler()
     }).handleRequest(request: request, response: response)
