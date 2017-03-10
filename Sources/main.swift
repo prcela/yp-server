@@ -59,7 +59,7 @@ routes.add(method: .get, uri: "/", handler: {
 routes.add(method: .get, uri: "/info", handler: {
     request, response in
     
-    let minRequiredVersion = 8
+    let minRequiredVersion = 9
     
     let info = [
         "min_required_version": minRequiredVersion,

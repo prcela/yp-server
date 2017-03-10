@@ -141,14 +141,9 @@ class Room
     
     func findMatch(id: Int) -> Match?
     {
-        for m in matches
-        {
-            if m.id == id
-            {
-                return m
-            }
-        }
-        return nil
+        return matches.first(where: { m in
+            return m.id == id
+        })
     }
     
     
